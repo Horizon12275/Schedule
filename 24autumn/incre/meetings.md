@@ -38,3 +38,17 @@ CR.D[tmp_predicate][tmp_entity] += delta_new[tmp_predicate][tmp_entity]
 2. 感觉可以先考虑非递归的情况。然而非递归的情况 counter 的含义似乎也不能直接被搬过来用？
 
 3. 或者说、我们的目的是、对 dataset 更改之后、减少它算 cr 的时间？就是 find periods 的时间？
+
+## 10.18
+
+1. 现在的问题是 MeTeoR 不支持 stratified negation，但是在 MeTeoR 的实现中，" It would be interesting to extend MeTeoR to support stratified negation, which will require a non trivial revision of our algorithm since materialisation within each separate stratum may be non-terminating."，所以在实现方面只能先不考虑 negation 的情况。
+
+2. 考虑实现 DRed 算法在 DatalogMTL 上的应用，直接照搬先看看会有什么问题和结果，需要实现以下几个部分（由于没有 negation body atom、所以可以简化一些部分）：
+   - 检查 dataset 的赋值是不是 deepcopy
+   - dataset 差集，并集，交集，检查是否是空集的实现函数
+   - 分层化 stratum （需结合图的遍历，拓扑排序）
+   - 得到 Os 即第 s 层的所有 predicate
+   - OVERDELETE
+   - INSERT
+   - instr 函数：即挑选出能且实例化后的规则实例 rσ
+   - Πs 和 Πsr ：基于 instr 函数的实现，对 rσ 的规则头进行筛选，即挑选出能推出的结果
