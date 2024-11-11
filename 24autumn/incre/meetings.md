@@ -105,3 +105,7 @@ CR.D[tmp_predicate][tmp_entity] += delta_new[tmp_predicate][tmp_entity]
 14. 这里的 DatalogMTL 的 seminaive 过程、在另一篇文章里有提到，待进一步研究一下是否是类似的 ？或许可以将 fact entailment 里面的 materialization 的过程改变为 seminaive 的。
 
 15. 通过 kmax 进行，在 overdeletion 的时候，可能不能用 kmax。可以记录 materialize 的轮次和 overdeletion 的轮次。正向 materialization 的时候记录轮次。可以先聚焦在第一个的条件上、即上一轮里的 fact 是否和原来的一样的终止条件。
+
+## 11.3
+
+1. 貌似这个单斜杠和双斜杠表示的意思不一样，推理的时候肯定需要用合并后的，但是做集合差的时候，是不是用单斜杠？
