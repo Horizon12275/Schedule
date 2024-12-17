@@ -13,3 +13,5 @@
 2. 像这种填时间的、貌似会有多种类型的答案 11/eleven am/eleven/11:00/11.00，不需要紧张格式的因素
 
 3. 写日期的时候、可以写 24th April/24 April/April 24/April 24th
+
+4. Wednesdays 可以加 s，表示每周三

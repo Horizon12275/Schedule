@@ -147,3 +147,22 @@
 ### Part 3
 
 关注结构: answer, explain, example, (alternative)
+
+## 技巧
+
+1. 不用重复问题，比如同意可以用 Sure, of course, Yes, I do, Absolutely ，Yeah for sure 这些回答
+
+2. 不同意可以用 No, not really. No, not at all，No，its not for me actually 这样的去回答
+
+3. Basically （用于开始 detail 描述）
+   which meant,（用来解释前面说过的词）
+   as a result
+   giving examples
+   particularly
+   especially
+   you know （用来解释前面说过的词）
+   anyhow（用来跑题的时候返回主题）
+
+4. advantage 和 disadvantage
+
+   - I can think a couple of things for the both columns, For the pros, I think ...

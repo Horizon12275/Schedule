@@ -93,3 +93,11 @@
 46. accounted for 占，解释或阐述
 
 47. beads 珠子
+
+48. Attendees --- participants 参与者
+
+49. social --- community 社区
+
+50. outsource 外包
+
+51. taxonomies 分类法
