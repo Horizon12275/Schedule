@@ -75,6 +75,36 @@
 
 11. ppt 上有具体的 LSTM 的公式
 
+12. RNN 是一种递归神经网络 每一次的输出由上一次的输出和当前的输入共同决定 即 yi=f(yi-1, xi) 也就带上了之前所有数据的特征 适合预测时间序列数据与自然语言处理
+
+13. RNN 的缺点是无法并行 因为每一次的输出都依赖于上一次的输出 另外 RNN 固定了依赖的长度 模型不够灵活 导致长期记忆的学习比较弱 这点可以通过 LSTM 来解决
+
+14. LSTM（Long Short-Term Memory）：长短期记忆网络 是 RNN 的一种变体 通过门控机制来控制信息的流动 具体而言 LSTM 有三个门：遗忘门、输入门、输出门 遗忘门决定了之前的状态有多少会被遗忘 输入门决定了新的状态有多少会被加入 输出门决定了这个状态有多少会被输出 虽然 LSTM 仍不能并行 但是单个 LSTM 单元内部的计算的并行度较好 比较适合长期记忆的学习
+
+```python
+# 预处理数据 相当于将第i个数据的输入变为第i-look_back到i-1个数据
+def create_dataset(data, look_back):
+  X, y = [], []
+  for i in range(len(data) - look_back):
+      X.append(data[i:i + look_back])
+      y.append(data[i + look_back])
+  return np.array(X), np.array(y)
+X, y = create_dataset(scaled_data, look_back)
+# 激活函数是tanh 所以需要将数据缩放到-1到1之间
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_data = scaler.fit_transform(time_series.reshape(-1, 1))
+# 构建RNN模型 神经元数为50 输入形状为look_back 输出形状为1
+model = Sequential([
+  SimpleRNN(50, input_shape=(look_back, 1), return_sequences=False, activation='tanh'),
+  Dense(1)  # Output layer for regression
+])
+# LSTM模型基本一样
+model = Sequential([
+  LSTM(50, input_shape=(look_back, 1), return_sequences=False),
+  Dense(1)
+])
+```
+
 ## chatGPT
 
 1. 由于先前的计算效率不够高、所以需要 transformer 这些加快运算
@@ -107,16 +137,18 @@
 
 7. Attention：有一个用来算自注意力的公式；每一个编码器里有一个前馈网络层和多头注意力层；这个前馈层是非线性的层（线性代数里的非线性变换，因为线性变换没有意义）
 
-8. self-attention：就是这个 it 为什么指的是它这个句子里的前面的狗？有三个矩阵、查询矩阵 Q、键矩阵 K 和值矩阵 V。然后这个权重 W 是算出来的。最后的任何一个位置上的值、就是两个单词的相关性的值。（而且还不是一个对称矩阵、因为语言的顺序会有不一样的意思）所以 Q\*KT 就是算的是这个东西，然后要让里面的所有的值都除以下面这个 dk、防止学习的时候的梯度消失问题、然后放到 softmax 里、做一个归一化、最后再乘一个 V 矩阵。最后的 Z 就是注意力矩阵。
+8. Attention(Q, K, V) = softmax(QK^T / sqrt(d_k))V
 
-9. 多头就是把多个上面的结果合并起来。
+9. self-attention：就是这个 it 为什么指的是它这个句子里的前面的狗？有三个矩阵、查询矩阵 Q、键矩阵 K 和值矩阵 V。然后这个权重 W 是算出来的。最后的任何一个位置上的值、就是两个单词的相关性的值。（而且还不是一个对称矩阵、因为语言的顺序会有不一样的意思）所以 Q\*KT 就是算的是这个东西，然后要让里面的所有的值都除以下面这个 dk、防止学习的时候的梯度消失问题、然后放到 softmax 里、做一个归一化、最后再乘一个 V 矩阵。最后的 Z 就是注意力矩阵。
 
-10. 重要的是再这个 Self-attention 的 Z1、乘相关度之后、得到了一个单词在一个句子里的特征是怎么样的
+10. 多头就是把多个上面的结果合并起来。
 
-11. positional encoding：位置编码(ppt 里是一个矩阵)。就是每个单词、可能单词都是一样的、但是位置不一样、所以要不同。原始嵌入值输入加上位置编码之后、再做训练。
+11. 重要的是再这个 Self-attention 的 Z1、乘相关度之后、得到了一个单词在一个句子里的特征是怎么样的
 
-12. 解码器就是反向得出这句话、所以会有一个 mask、只能看到前面的内容。然后就是把这个编码器的输出和解码器的输出做 attention、然后再做一个前馈网络层、最后输出。（就是一个负无穷大）
+12. positional encoding：位置编码(ppt 里是一个矩阵)。就是每个单词、可能单词都是一样的、但是位置不一样、所以要不同。原始嵌入值输入加上位置编码之后、再做训练。
 
-13. 这个 transformer 可以并行计算（因为是矩阵计算），解码器可以不是并行计算。
+13. 解码器就是反向得出这句话、所以会有一个 mask、只能看到前面的内容。然后就是把这个编码器的输出和解码器的输出做 attention、然后再做一个前馈网络层、最后输出。（就是一个负无穷大）
 
-14. NLP、CV 都可以用 transformer。
+14. 这个 transformer 可以并行计算（因为是矩阵计算），解码器可以不是并行计算。
+
+15. NLP、CV 都可以用 transformer。
